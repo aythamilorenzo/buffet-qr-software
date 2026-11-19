@@ -28,6 +28,7 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
    - A checklist milestone under *Current Objective* is completed.
    - Any ambiguity arises regarding buffet business rules.
 4. **Session Handover:** Update this `PLAN.md` with newly created files, checked-off items, and the updated *Current Objective* before concluding the session.
+5. **Branch Naming:** Working branches use descriptive names without iteration numbers (e.g., `feat/env-setup`, `fix/websocket-reconnect`, `feat/domain-entities`), always created from `develop`.
 
 ## 5. References & Key Artifacts
 - **Global Rules:** [AGENTS.md](./AGENTS.md)
