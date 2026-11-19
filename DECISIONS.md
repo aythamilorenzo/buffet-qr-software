@@ -1,0 +1,6 @@
+# DECISIONS.md — Architecture Decision Log
+
+- **ADR-001 | Out-of-Scope Billing & POS Integration:** The system handles internal kitchen orders exclusively. Payments, fiscal receipts (Veri*factu), and POS integrations (e.g., Ágora) are strictly excluded to avoid legal friction and vendor lock-in.
+- **ADR-002 | Hexagonal Architecture with Explicit `abc.ABC` Ports:** Core domain and use cases live in pure Python (`domain/`, `application/`). Infrastructure adapters (`PostgreSQL`, `FastAPI`, `python-escpos`) must explicitly inherit from abstract ports (`abc.ABC` + `@abstractmethod`) in `ports/`.
+- **ADR-003 | Configurable Buffet Rules via `RestaurantPolicy`:** Round dish limits, optional round cooldowns (default `0s`), and max active pending kitchen rounds are driven by a per-restaurant `RestaurantPolicy` entity—never hardcoded constants.
+- **ADR-004 | Hybrid Stack (FastAPI + React):** Backend logic, concurrency locking, and WebSockets reside in Python (`FastAPI` + `SQLModel` + `asyncpg`). Frontend (`React` + strict `TypeScript`) acts purely as a thin client with zero business logic.
