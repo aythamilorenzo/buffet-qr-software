@@ -17,8 +17,9 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 - [x] Implement pure domain entities (`TableSession`, `CartItem`, `OrderRound`, `RestaurantPolicy`) in `backend/app/domain/` as frozen kw-only dataclasses with value objects (`DinerIdentifier`) and domain exceptions (zero framework imports).
 - [x] Define abstract ports (`abc.ABC`: `SessionRepositoryPort`, `OrderRepositoryPort`, `KitchenNotifierPort`) in `backend/app/ports/`.
 - [x] Write 55 pure domain unit tests in `backend/tests/domain/` (ruff and pytest green, no live PostgreSQL).
-- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`): `OpenTableSessionUseCase`, `CloseTableSessionUseCase`, `AssignDinerIdentifierUseCase`, `AddCartItemUseCase`, `RemoveCartItemUseCase`, `SubmitOrderRoundUseCase`, `MarkRoundCompletedUseCase`.
-- [ ] Write use-case tests in `/backend/tests` using in-memory fake adapters implementing the ports (no live PostgreSQL).
+- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`): 6 of 7 implemented on branch `feat/use-cases` (all except `SubmitOrderRoundUseCase`).
+- [ ] Write use-case tests in `/backend/tests` using in-memory fake adapters implementing the ports (no live PostgreSQL): 21 tests green with in-memory fakes (76 total); submit tests pending with the use case.
+- **Mandatory Checkpoint (open 2026-11-25):** (1) confirm the port change — `OrderRepositoryPort.mark_round_completed` now returns `OrderRound` instead of `None` so the KDS notification carries the stored state; (2) decide the round composition — only the submitting diner's pending items, or the whole table's pending cart.
 - **Mandatory Checkpoint (approved 2026-11-25):** Seat cap lives in `RestaurantPolicy.max_diners_per_table` (14 configured per restaurant); cooldown is per table session measured from the last round's `submitted_at` with `None` = disabled; rounds snapshot their cart lines; `RoundStatus` stays `PENDING`/`COMPLETED`; the frontend persists the diner letter. Domain branch merged into `develop` (see ADR-005 and ADR-006).
 
 ## 4. Agent Workflow & Mandatory Checkpoints
