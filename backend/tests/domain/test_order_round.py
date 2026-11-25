@@ -24,11 +24,12 @@ def build_cart_item(
     diner_letter: str = "A",
     quantity: int = 2,
     session_id: UUID = SESSION_ID,
+    dish_id: UUID | None = None,
 ) -> CartItem:
     return CartItem(
         session_id=session_id,
         diner_identifier=DinerIdentifier(diner_letter),
-        dish_id=uuid4(),
+        dish_id=dish_id if dish_id is not None else uuid4(),
         dish_name="California Roll",
         station="sushi",
         quantity=quantity,
@@ -123,3 +124,28 @@ def test_dish_quantity_per_diner_groups_lines_by_identifier() -> None:
         DinerIdentifier("A"): 5,
         DinerIdentifier("B"): 1,
     }
+
+
+def test_distinct_dish_count_per_diner_ignores_quantities() -> None:
+    sushi_id = uuid4()
+    items = (
+        build_cart_item(diner_letter="A", quantity=10, dish_id=sushi_id),
+        build_cart_item(diner_letter="A", quantity=5, dish_id=sushi_id),
+        build_cart_item(diner_letter="A", quantity=1),
+        build_cart_item(diner_letter="B", quantity=1, dish_id=sushi_id),
+    )
+    assert build_round(items=items).distinct_dish_count_per_diner() == {
+        DinerIdentifier("A"): 2,
+        DinerIdentifier("B"): 1,
+    }
+
+
+def test_total_distinct_dish_count_counts_unique_dishes_across_diners() -> None:
+    sushi_id = uuid4()
+    items = (
+        build_cart_item(diner_letter="A", quantity=2, dish_id=sushi_id),
+        build_cart_item(diner_letter="B", quantity=3, dish_id=sushi_id),
+        build_cart_item(diner_letter="B", quantity=1),
+    )
+    assert build_round(items=items).total_distinct_dish_count == 2
+    assert build_round(items=items).total_dish_quantity == 6
