@@ -16,10 +16,10 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 ## 3. Current Objective (Iteration 1: Backend Hexagonal Core) — in progress
 - [x] Implement pure domain entities (`TableSession`, `CartItem`, `OrderRound`, `RestaurantPolicy`) in `backend/app/domain/` as frozen kw-only dataclasses with value objects (`DinerIdentifier`) and domain exceptions (zero framework imports).
 - [x] Define abstract ports (`abc.ABC`: `SessionRepositoryPort`, `OrderRepositoryPort`, `KitchenNotifierPort`) in `backend/app/ports/`.
-- [x] Write 52 pure domain unit tests in `backend/tests/domain/` (ruff and pytest green, no live PostgreSQL).
-- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`).
+- [x] Write 55 pure domain unit tests in `backend/tests/domain/` (ruff and pytest green, no live PostgreSQL).
+- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`): `OpenTableSessionUseCase`, `CloseTableSessionUseCase`, `AssignDinerIdentifierUseCase`, `AddCartItemUseCase`, `RemoveCartItemUseCase`, `SubmitOrderRoundUseCase`, `MarkRoundCompletedUseCase`.
 - [ ] Write use-case tests in `/backend/tests` using in-memory fake adapters implementing the ports (no live PostgreSQL).
-- **Mandatory Checkpoint (reached 2026-11-25):** Awaiting human review of the domain rules and the three port contracts before starting the use cases. Work lives on branch `feat/domain-entities-and-ports` (not yet merged into `develop`).
+- **Mandatory Checkpoint (approved 2026-11-25):** Seat cap lives in `RestaurantPolicy.max_diners_per_table` (14 configured per restaurant); cooldown is per table session measured from the last round's `submitted_at` with `None` = disabled; rounds snapshot their cart lines; `RoundStatus` stays `PENDING`/`COMPLETED`; the frontend persists the diner letter. Domain branch merged into `develop` (see ADR-005 and ADR-006).
 
 ## 4. Agent Workflow & Mandatory Checkpoints
 1. **Plan Before Writing:** Before creating or modifying files, briefly list the target files and their purpose. Wait for human approval if the change affects ports, database schemas, or API contracts.
