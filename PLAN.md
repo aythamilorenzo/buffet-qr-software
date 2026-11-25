@@ -4,7 +4,7 @@
 Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 - Table activation by waiters specifying the number of guests.
 - Real-time shared table cart with individual diner identifiers (`A`, `B`, `C`...).
-- Configurable per-restaurant operational rules via `RestaurantPolicy` (optional per-guest dish limit per round, optional round cooldown—disabled by default—and maximum active pending rounds in the kitchen).
+- Configurable per-restaurant operational rules via `RestaurantPolicy` (optional dish limit per round—units or distinct dishes, per diner or whole table, configurable per restaurant—, optional round cooldown—disabled by default—and maximum active pending rounds in the kitchen).
 - Direct kitchen output via a web Kitchen Display System (KDS) and local thermal printer (`python-escpos`), fully decoupled from external POS systems (e.g., Ágora) and with zero payment or billing handling.
 
 ## 2. Current Objective (Iteration 0: WSL Environment & GitFlow Setup) — ✅ Completed (2026-11-19)
@@ -47,6 +47,7 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 - **Backend Environment:** [backend/pyproject.toml](./backend/pyproject.toml) — editable install at `backend/.venv` (ruff line-length 88, pytest `asyncio_mode = auto`)
 - **Backend Package Layout:** `backend/app/{domain,application,ports,adapters/{inbound,outbound}}`
 - **Domain Layer:** `backend/app/domain/{table_session,cart_item,order_round,restaurant_policy,value_objects,exceptions}.py`
+- **Policy Semantics Knobs:** `DishCountingMode` (units vs distinct dishes) and `DishLimitScope` (per diner vs table total) in `backend/app/domain/restaurant_policy.py` (ADR-008)
 - **Ports:** `backend/app/ports/{session_repository,order_repository,kitchen_notifier}.py`
 - **Use Cases:** `backend/app/application/{open_table_session,close_table_session,assign_diner_identifier,add_cart_item,remove_cart_item,submit_order_round,mark_round_completed}_use_case.py`
 - **Domain Tests:** `backend/tests/domain/test_{table_session,cart_item,order_round,restaurant_policy,value_objects}.py`

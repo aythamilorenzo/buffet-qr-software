@@ -75,6 +75,23 @@ class OrderRound:
             )
         return quantities
 
+    def distinct_dish_count_per_diner(self) -> dict[DinerIdentifier, int]:
+        """Distinct dishes each diner contributed, regardless of quantity."""
+        dishes_per_diner: dict[DinerIdentifier, set[UUID]] = {}
+        for item in self.items:
+            dishes_per_diner.setdefault(item.diner_identifier, set()).add(
+                item.dish_id,
+            )
+        return {
+            identifier: len(dish_ids)
+            for identifier, dish_ids in dishes_per_diner.items()
+        }
+
+    @property
+    def total_distinct_dish_count(self) -> int:
+        """Distinct dishes across every diner in this round."""
+        return len({item.dish_id for item in self.items})
+
     def mark_completed(self, completed_at: datetime) -> "OrderRound":
         """Returns the completed version of the round, rejecting double completion."""
         if self.status is not RoundStatus.PENDING:

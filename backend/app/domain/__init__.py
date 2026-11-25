@@ -20,7 +20,11 @@ from app.domain.exceptions import (
     TableSessionNotFoundError,
 )
 from app.domain.order_round import OrderRound, RoundStatus
-from app.domain.restaurant_policy import RestaurantPolicy
+from app.domain.restaurant_policy import (
+    DishCountingMode,
+    DishLimitScope,
+    RestaurantPolicy,
+)
 from app.domain.table_session import SessionStatus, TableSession
 from app.domain.value_objects import DinerIdentifier
 
@@ -29,7 +33,9 @@ __all__ = [
     "ConcurrentModificationError",
     "DinerIdentifier",
     "DinerNotAssignedToSessionError",
+    "DishCountingMode",
     "DishLimitExceededError",
+    "DishLimitScope",
     "DomainError",
     "EmptyOrderRoundError",
     "GuestCapacityExceededError",

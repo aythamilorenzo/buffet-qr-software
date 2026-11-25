@@ -2,7 +2,7 @@
 
 ## 1. Project Description & Scope
 Web application to manage table orders in *all-you-can-eat à la carte* restaurants via per-table QR codes.
-- **Core Flow:** A waiter activates a table specifying the guest count -> diners scan the QR code and join a real-time shared cart with individual identifiers (`A`, `B`, `C`...) -> diners submit order rounds governed by configurable per-restaurant rules (`RestaurantPolicy`: per-guest dish limits, optional round cooldown, and max pending rounds) -> the kitchen receives the ticket on a Kitchen Display System (KDS) or thermal printer.
+- **Core Flow:** A waiter activates a table specifying the guest count -> diners scan the QR code and join a real-time shared cart with individual identifiers (`A`, `B`, `C`...) -> diners submit order rounds governed by configurable per-restaurant rules (`RestaurantPolicy`: configurable dish limits—units or distinct dishes, per diner or whole table—, optional round cooldown, and max pending rounds) -> the kitchen receives the ticket on a Kitchen Display System (KDS) or thermal printer.
 - **Strict Boundary (Out of Scope):** This system does NOT process payments, calculate monetary bills, issue fiscal receipts, or integrate with external POS systems (e.g., Ágora). It exclusively manages internal operational food orders routed to the kitchen.
 
 ## 2. Tech Stack
