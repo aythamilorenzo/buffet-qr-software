@@ -8,6 +8,7 @@ from app.application.close_table_session_use_case import CloseTableSessionUseCas
 from app.application.mark_round_completed_use_case import MarkRoundCompletedUseCase
 from app.application.open_table_session_use_case import OpenTableSessionUseCase
 from app.application.remove_cart_item_use_case import RemoveCartItemUseCase
+from app.application.submit_order_round_use_case import SubmitOrderRoundUseCase
 
 __all__ = [
     "AddCartItemUseCase",
@@ -16,4 +17,5 @@ __all__ = [
     "MarkRoundCompletedUseCase",
     "OpenTableSessionUseCase",
     "RemoveCartItemUseCase",
+    "SubmitOrderRoundUseCase",
 ]
