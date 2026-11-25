@@ -13,12 +13,13 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 - [x] Set up `/backend` Python 3.11+ environment in WSL (`backend/pyproject.toml` with `fastapi`, `sqlmodel`, `asyncpg`, `python-escpos`, `pytest`, `ruff`) and scaffold the hexagonal folder layout (`domain/`, `application/`, `ports/`, `adapters/inbound`, `adapters/outbound`, `tests/`).
 - [x] Set up `/frontend` Vite + React 19 + strict TypeScript + Tailwind CSS v4 scaffold (`tsc -b && vite build` and `oxlint` verified green).
 
-## 3. Next Objective (Iteration 1: Backend Hexagonal Core)
-- [ ] Implement pure domain entities (`TableSession`, `CartItem`, `OrderRound`, `RestaurantPolicy`) in `backend/app/domain/` as `@dataclass(frozen=True)` with value objects and domain exceptions (zero framework imports).
-- [ ] Define abstract ports (`abc.ABC`: `SessionRepositoryPort`, `OrderRepositoryPort`, `KitchenNotifierPort`) in `backend/app/ports/`.
-- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`).
-- [ ] Write pure Python unit tests in `/backend/tests` using in-memory fake adapters implementing the ports (no live PostgreSQL).
-- **Mandatory Checkpoint:** Stop for human review right after the ports are defined (per Section 4).
+## 3. Current Objective (Iteration 1: Backend Hexagonal Core) — in progress
+- [x] Implement pure domain entities (`TableSession`, `CartItem`, `OrderRound`, `RestaurantPolicy`) in `backend/app/domain/` as frozen kw-only dataclasses with value objects (`DinerIdentifier`) and domain exceptions (zero framework imports).
+- [x] Define abstract ports (`abc.ABC`: `SessionRepositoryPort`, `OrderRepositoryPort`, `KitchenNotifierPort`) in `backend/app/ports/`.
+- [x] Write 55 pure domain unit tests in `backend/tests/domain/` (ruff and pytest green, no live PostgreSQL).
+- [ ] Implement validation use cases in `backend/app/application/` with no hardcoded buffet constants (all rules evaluated against `RestaurantPolicy`): `OpenTableSessionUseCase`, `CloseTableSessionUseCase`, `AssignDinerIdentifierUseCase`, `AddCartItemUseCase`, `RemoveCartItemUseCase`, `SubmitOrderRoundUseCase`, `MarkRoundCompletedUseCase`.
+- [ ] Write use-case tests in `/backend/tests` using in-memory fake adapters implementing the ports (no live PostgreSQL).
+- **Mandatory Checkpoint (approved 2026-11-25):** Seat cap lives in `RestaurantPolicy.max_diners_per_table` (14 configured per restaurant); cooldown is per table session measured from the last round's `submitted_at` with `None` = disabled; rounds snapshot their cart lines; `RoundStatus` stays `PENDING`/`COMPLETED`; the frontend persists the diner letter. Domain branch merged into `develop` (see ADR-005 and ADR-006).
 
 ## 4. Agent Workflow & Mandatory Checkpoints
 1. **Plan Before Writing:** Before creating or modifying files, briefly list the target files and their purpose. Wait for human approval if the change affects ports, database schemas, or API contracts.
@@ -36,5 +37,8 @@ Web-based QR ordering system for *all-you-can-eat à la carte* restaurants:
 - **Frontend Context:** [frontend/AGENTS.md](./frontend/AGENTS.md)
 - **Backend Environment:** [backend/pyproject.toml](./backend/pyproject.toml) — editable install at `backend/.venv` (ruff line-length 88, pytest `asyncio_mode = auto`)
 - **Backend Package Layout:** `backend/app/{domain,application,ports,adapters/{inbound,outbound}}`
+- **Domain Layer:** `backend/app/domain/{table_session,cart_item,order_round,restaurant_policy,value_objects,exceptions}.py`
+- **Ports:** `backend/app/ports/{session_repository,order_repository,kitchen_notifier}.py`
+- **Domain Tests:** `backend/tests/domain/test_{table_session,cart_item,order_round,restaurant_policy,value_objects}.py`
 - **Frontend Scaffold:** `frontend/vite.config.ts` (React + Tailwind v4 plugins), `frontend/tsconfig.app.json` (`"strict": true`), `frontend/src/{App.tsx,main.tsx,index.css}`
 - **Active Contracts / Schemas:** *(Will be linked here as created, e.g., `backend/app/ports/` or `openapi.json`)*
