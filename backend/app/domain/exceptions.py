@@ -20,12 +20,24 @@ class GuestCapacityExceededError(DomainError):
     """Raised when more diners join a session than its guest count allows."""
 
 
+class DinerNotAssignedToSessionError(DomainError):
+    """Raised when a cart action references a letter the session never seated."""
+
+
 class MaxDinersPerTableExceededError(DomainError):
     """Raised when a declared guest count exceeds the policy seat cap of a table."""
 
 
 class SessionNotActiveError(DomainError):
     """Raised when an operation requires an open session but the session is closed."""
+
+
+class TableSessionNotFoundError(DomainError):
+    """Raised when a use case targets a session identifier that does not exist."""
+
+
+class TableSessionAlreadyActiveError(DomainError):
+    """Raised when activating a table that already runs an open session."""
 
 
 class EmptyOrderRoundError(DomainError):
