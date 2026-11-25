@@ -3,6 +3,7 @@
 from app.domain.cart_item import CartItem
 from app.domain.exceptions import (
     ConcurrentModificationError,
+    DinerNotAssignedToSessionError,
     DishLimitExceededError,
     DomainError,
     EmptyOrderRoundError,
@@ -15,6 +16,8 @@ from app.domain.exceptions import (
     RoundAlreadyCompletedError,
     RoundCooldownNotElapsedError,
     SessionNotActiveError,
+    TableSessionAlreadyActiveError,
+    TableSessionNotFoundError,
 )
 from app.domain.order_round import OrderRound, RoundStatus
 from app.domain.restaurant_policy import RestaurantPolicy
@@ -25,6 +28,7 @@ __all__ = [
     "CartItem",
     "ConcurrentModificationError",
     "DinerIdentifier",
+    "DinerNotAssignedToSessionError",
     "DishLimitExceededError",
     "DomainError",
     "EmptyOrderRoundError",
@@ -42,4 +46,6 @@ __all__ = [
     "SessionNotActiveError",
     "SessionStatus",
     "TableSession",
+    "TableSessionAlreadyActiveError",
+    "TableSessionNotFoundError",
 ]
