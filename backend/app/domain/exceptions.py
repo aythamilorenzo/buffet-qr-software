@@ -20,6 +20,10 @@ class GuestCapacityExceededError(DomainError):
     """Raised when more diners join a session than its guest count allows."""
 
 
+class MaxDinersPerTableExceededError(DomainError):
+    """Raised when a declared guest count exceeds the policy seat cap of a table."""
+
+
 class SessionNotActiveError(DomainError):
     """Raised when an operation requires an open session but the session is closed."""
 
