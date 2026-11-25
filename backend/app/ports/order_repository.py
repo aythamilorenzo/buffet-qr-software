@@ -58,8 +58,8 @@ class OrderRepositoryPort(ABC):
         self,
         round_id: UUID,
         completed_at: datetime,
-    ) -> None:
-        """Flags a pending round as completed in one atomic update.
+    ) -> OrderRound:
+        """Atomically flags a pending round as completed and returns the result.
 
         Raises ConcurrentModificationError when the round is missing or is no
         longer pending, so KDS clients converge on a single completion.
